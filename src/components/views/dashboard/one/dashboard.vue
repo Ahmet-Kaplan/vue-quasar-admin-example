@@ -1,101 +1,82 @@
 <template>
-  <div class="layout-padding ">
-    <div class="flex wrap gutter">
-      <div class="width-1of3 sm-auto">
-        <cardTotal
-          title="Total Posts"
-          background-color="bg-teal-9"
-          icon-name="local_post_office"
-          :total="totalPosts">
-        </cardTotal>
+  <div>
+    <div class="row ">
+      <div class="col-3 hvr-float-shadow">
+        <card-total titleClass="bg-positive " icon="fa-envelope" titulo="Posts" :conteudo="totalPosts"></card-total>
       </div>
-      <div class="width-1of3 sm-auto">
-        <cardTotal
-          title="Total comments"
-          background-color="bg-teal-7"
-          icon-name="comment"
-          :total="totalComments">
-        </cardTotal>
+      <div class="col-3 hvr-float-shadow">
+        <card-total titleClass="bg-red " icon="fa-comments-o" titulo="Comments" :conteudo="totalComments"></card-total>
       </div>
-      <div class="width-1of3 sm-auto">
-        <cardTotal
-          title="Static total"
-          background-color="bg-teal-5"
-          icon-name="repeat_one"
-          :total="50004">
-        </cardTotal>
+      <div class="col-3 hvr-float-shadow">
+        <card-total titleClass="bg-purple" icon="fa-tasks" titulo="Tasks" :conteudo="totalTodos"></card-total>
+      </div>
+      <div class="col-3 hvr-float-shadow">
+        <card-total titleClass="bg-orange" icon="fa-yelp" titulo="Static" :conteudo="1200"></card-total>
       </div>
     </div>
-    <div class="flex wrap gutter">
-      <div class="width-1of2 lg-width-1of3 sm-auto">
-        <card-chart
-          card-title="Total Graph"
-          :data="dataForGraph"
-        ></card-chart>
+    <div class="row">
+      <div class="col-xl-5">
+        <q-card class="bg-white ">
+          <q-card-main>
+            <bar-graph :data="dataForGraph" :labels="labelsForGraph"> </bar-graph>
+          </q-card-main>
+        </q-card>
       </div>
-      <div class="auto">
-        <knob-statistics
-          card-title="General statistics">
-        </knob-statistics>
+      <div class="col-lg-6 col-xl-3" id="card-profile">
+        <card-ball icon="fa-id-card-o" icon-size="36px" title="User Profile" img-path="statics/profile.jpg">
+          <profile slot="content"></profile>
+        </card-ball>
       </div>
-    </div>
-    <div class="flex wrap gutter">
-      <div class="width-4of5 sm-width-1of1">
-        <card-todo
-          card-title="Generic todos"
-          api="todos">
-        </card-todo>
+      <div class="col-lg-6 col-xl-4" id="card-settings">
+        <card-ball icon="settings" icon-size="40px" title="User Settings">
+          <settings slot="content"></settings>
+        </card-ball>
       </div>
+
     </div>
   </div>
 </template>
 <script type="text/javascript">
-  import cardChart from './cardChart.vue'
-  import cardTotal from './cardTotal.vue'
-  import cardTodo from './cardTodo.vue'
-  import knobStatistics from './knobStatistics.vue'
-  import { mapMutations } from 'vuex'
-  export default {
-    name: 'Home',
-    mounted () {
-      // Axios.all not working
-      Promise.all([
-        this.$http.jsonplaceholder.get('posts'),
-        this.$http.jsonplaceholder.get('comments'),
-        this.$http.jsonplaceholder.get('todos')
-      ])
-        .then(response => {
-          this.setPosts(response[0].data)
-          this.totalPosts = response[0].data.length
-          this.totalComments = response[1].data.length
-          this.totalTodos = response[2].data.length
-        })
-    },
-    data () {
-      return {
-        totalPosts: 0,
-        totalComments: 0,
-        totalTodos: 0
-      }
-    },
-    computed: {
-      dataForGraph () {
-        return {
-          posts: this.totalPosts,
-          todos: this.totalTodos,
-          comments: this.totalComments
-        }
-      }
-    },
-    methods: {
-      ...mapMutations(['setPosts'])
-    },
-    components: {
-      cardTotal,
-      cardChart,
-      cardTodo,
-      knobStatistics
+import CardTotal from './cardTotal'
+import BarGraph from './barGraph'
+import Settings from './settings'
+import Profile from './profile'
+export default {
+  name: 'DashboardOne',
+  components: {
+    CardTotal, BarGraph, Settings, Profile
+  },
+  mounted () {
+    Promise.all([
+      this.$http.jsonplaceholder.get('posts'),
+      this.$http.jsonplaceholder.get('comments'),
+      this.$http.jsonplaceholder.get('todos')
+    ])
+      .then(response => {
+        this.totalPosts = response[0].data.length
+        this.totalComments = response[1].data.length
+        this.totalTodos = response[2].data.length
+      })
+  },
+  data () {
+    return {
+      labelsForGraph: ['Posts', 'Comments', 'Todos'],
+      totalPosts: 0,
+      totalComments: 0,
+      totalTodos: 0
+    }
+  },
+  computed: {
+    dataForGraph () {
+      return [
+        { label: 'Posts', backgroundColor: '#2196F3', data: [this.totalPosts] },
+        { label: 'Todos', backgroundColor: '#D81B60', data: [this.totalTodos] },
+        { label: 'Comments', backgroundColor: '#21BA45', data: [this.totalComments] }
+      ]
     }
   }
+}
 </script>
-<style></style>
+<style scoped>
+
+</style>

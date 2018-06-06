@@ -7,27 +7,35 @@
     "clean": "node build/script.clean.js",
     "dev": "node build/script.dev.js",
     "build": "node build/script.build.js",
+    "test": "cross-env NODE_ENV=test jest",
+    "coverage": "cross-env NODE_ENV=test jest --no-cache --coverage",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "avoriaz": "^4.1.0",
     "axios": "^0.15.3",
+    "babel-jest": "^21.0.2",
     "babel-runtime": "^6.0.0",
     "chart.js": "^2.5.0",
-    "countup.js": "^1.8.2",
+    "cross-env": "^5.0.5",
     "dragula": "^3.7.2",
     "fastclick": "^1.0.6",
-    "firebase": "^4.1.3",
-    "firebaseui": "^2.2.1",
     "font-awesome": "^4.7.0",
     "gmaps": "^0.4.24",
+    "gojs": "^1.7.25",
     "highlight": "^0.2.4",
+    "hover.css": "^2.2.1",
+    "jest": "^21.0.2",
+    "jest-vue": "^0.7.0",
+    "jest-vue-preprocessor": "^1.1.0",
     "material-design-icons": "^3.0.1",
     "moment": "^2.15.0",
-    "promise-polyfill": "^6.0.2",
-    "quasar-framework": "^0.13.2",
+    "promise.prototype.finally": "^3.0.1",
+    "quasar-framework": "^0.14.7",
     "roboto-fontface": "^0.7.0",
     "vivus": "^0.4.0",
-    "vue": "2.2.2",
+    "vue": "^2.5.0",
+    "vue-chartjs": "^2.8.7",
     "vue-router": "^2.3",
     "vuelidate": "^0.3.1",
     "vuex": "^2.2.1"
@@ -67,10 +75,36 @@
     "url-loader": "^0.5.7",
     "vue-loader": "^11.1.4",
     "vue-style-loader": "^2.0.3",
-    "vue-template-compiler": "2.2.2",
+    "vue-template-compiler": "^2.5.0",
+    "vue-test-loader": "^0.4.0",
     "webpack": "^2.2.1",
     "webpack-dev-middleware": "^1.8.4",
     "webpack-hot-middleware": "^2.17.0",
     "webpack-merge": "^3.0.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "vue"
+    ],
+    "collectCoverageFrom": [
+      "**/*.{vue}"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/core-js",
+      "node_modules/babel-runtime",
+      "node_modules/lodash",
+      "node_modules/vue"
+    ],
+    "moduleNameMapper": {
+      "quasar": "quasar-framework/dist/quasar.esm.js",
+      "^vue$": "vue/dist/vue.common.js"
+    },
+    "coverageDirectory": "<rootDir>/src/components/coverage",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      ".*\\.(vue)$": "<rootDir>/node_modules/jest-vue"
+    },
+    "mapCoverage": true
   }
 }
